@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+
+{% block title %} input anggota {% endblock %}
+
+{% block header %} Add New Anggota{% endblock %}
+
+{% block body %}
+    <a href="{{ url_for('get_buku_all') }}" class="btn btn-primary">Back Home</a>
+    <div class="card-body">
+        <form action="{{ url_for('input_buku') }}" method="POST">
+            <div class="form-group">
+                <label for="name">Judul:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">#</div>
+                    </div>
+                    <input type="text" id="judul_buku" class="form-control" placeholder="Input Judul Buku" name="judul_buku">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name">Pengarang:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">#</div>
+                    </div>
+                    <input type="text" id="pengarang" class="form-control" placeholder="Input Pengarang" name="pengarang">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name">Penerbit:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">@</div>
+                    </div>
+                    <input type="text" id="penerbit" class="form-control" placeholder="Input Penerbit" name="penerbit">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name">Tahun Terbit:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">#</div>
+                    </div>
+                    <input type="text" id="tahun_terbit" class="form-control" placeholder="Input Tahun Terbit" name="tahun_terbit">
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-sm" name="submit">Submit</button>
+                <button type="reset" class="btn btn-danger btn-sm">Cancel</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

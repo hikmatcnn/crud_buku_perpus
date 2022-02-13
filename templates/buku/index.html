@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+
+{% block title %} List Buku{% endblock %}
+
+{% block header %} Table Buku {% endblock %}
+
+{% block body %}
+    {% if role == "admin" %}
+        <a href="{{ url_for('input_buku') }}" class="btn btn-primary mt-4" style="margin-bottom: 1.3rem;">Input Data Buku</a>
+    {% endif %}
+    <div class="mt-4">
+
+    </div>
+    {% include "includes/alert.html" %}
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Judul</th>
+                <th scope="col">Pengarang</th>
+                <th scope="col">Penerbit</th>
+                <th scope="col">Tahun Terbit</th>
+                {% if role == "admin" %}
+                    <th scope="col">Action</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for buku in data %}
+                <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td>{{buku.judul_buku}}</td>
+                    <td>{{buku.pengarang}}</td>
+                    <td>{{buku.penerbit}}</td>
+                    <td>{{buku.tahun_terbit}}</td>
+                    {% if role == "admin" %}
+                        <td>
+                            <a href="{{ url_for('edit_buku', id_buku=buku.id_buku) }}" class="btn btn-warning">Edit</a>
+                            <a href="{{ url_for('delete_buku', id_buku=buku.id_buku) }}" class="btn btn-danger" onclick="return confirm('Are you sure delete this data?')">Delete</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
