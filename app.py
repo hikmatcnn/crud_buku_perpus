@@ -21,13 +21,11 @@ app.config['MYSQL_DB'] = 'perpustakaan1'
 # Intialize MySQL
 mysql = MySQL(app)
 
-def checking_login():  
-    id_user = session['id_user']  
-    print(id_user)
-    if id_user:
-        return True        
+def checking_login():          
+    if not session.get("id_user"):
+        return False        
     else:        
-        return False
+        return True
 
 @app.route('/', methods=['GET'])
 def home():
@@ -61,10 +59,6 @@ def login():
         else:
             # Account doesnt exist or username/password incorrect
             flash("Incorrect username/password!", "danger")            
-
-    check = checking_login()
-    if check:
-        return redirect(url_for('get_buku_all'))
 
     return render_template('base/login.html')
 
@@ -111,6 +105,7 @@ def daftar():
 # Anggota Route
 @app.route('/anggota/get_all', methods =['GET'])
 def get_anggota_all():
+    role_user = ''
     check = checking_login()
     if not check:
         return redirect(url_for('login'))
@@ -119,7 +114,12 @@ def get_anggota_all():
     sql="SELECT * FROM users"
     cursor.execute(sql)
     anggota_all = cursor.fetchall()    
-    role_user = session['role']
+    
+    if not session.get("id_user"):
+        role_user = ''     
+    else:        
+        role_user = session['role']
+
     return render_template('anggota/index.html', data=anggota_all, role = role_user)
 
 @app.route('/anggota/edit/<string:id_user>', methods=['GET'])
@@ -208,6 +208,7 @@ def input_buku():
 
 @app.route('/buku/get_all', methods =['GET'])
 def get_buku_all():
+    role_user = ''
     check = checking_login()
     if not check:
         return render_template('base/login.html')
@@ -216,7 +217,11 @@ def get_buku_all():
     sql="SELECT * FROM buku"
     cursor.execute(sql)
     buku_all = cursor.fetchall()    
-    role_user = session['role']
+    if not session.get("id_user"):
+        role_user = ''     
+    else:        
+        role_user = session['role']
+
     return render_template('buku/index.html', data=buku_all, role = role_user)
 
 @app.route('/buku/edit/<string:id_buku>', methods=['GET'])
@@ -279,9 +284,9 @@ def delete_buku(id_buku):
 @app.route('/logout', methods=['GET'])
 def logout():
     session['loggedin'] = False
-    session['id_user'] = ''
-    session['username'] = ''
-    session['role'] = ''
+    session['id_user'] = None
+    session['username'] = None
+    session['role'] = None
     # Redirect to home page
     return redirect(url_for('login'))
     
